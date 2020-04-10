@@ -124,8 +124,3 @@ macro_f1 = f1_score(test_labels, predictions,average='macro')
 print(" The Microaveraged F1-score with LinearSVC model is {} ".format(micro_f1*100))
 print(" The Macroaveraged F1-score with LinearSVC model is {} ".format(macro_f1*100))
 
-# Neural Network Clf:-
-
-import keras
-from keras.models import Sequential
-from keras.layers import Dense
