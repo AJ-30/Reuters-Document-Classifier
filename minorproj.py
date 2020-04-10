@@ -174,7 +174,7 @@ print(" The macroaveraged F1 score with LinearSVC model is {} ".format(f1_macro*
 f1_micro = f1_score(y_tst, predictions,average='micro')
 print(" The microaveraged f1 with LinearSVC model is {} ".format(f1_micro*100))
 
-"""Neural Network training:-"""
+"""Neural Network training for 10 binary classifiers one for each class:-"""
 
 import keras
 from keras.models import Sequential
@@ -260,7 +260,7 @@ y9tst_app = [1-y_tst[v9,9] for v9 in range(len(test))]
 d2 = pd.DataFrame(y_tst[:,9])
 y9tst_tgt = d2.assign(Negativeclass = y9tst_app)
 
-"""cv error to decide the number of hidden neurons for 'acq':-"""
+"""cv error to decide the number of hidden neurons for class 'acq':-"""
 
 import sklearn
 from sklearn.model_selection import cross_val_predict
@@ -283,7 +283,7 @@ for tmp in nntmp:
   #obtained cv scores: [0.9864385883803358, 0.986438588380336, 0.9859762675296656, 0.9856680536292187, 0.9865926953305594]
   # fixing number of neurons as 20 which gives cv score as 0.9864385883803358
 
-"""after deciding the number of neurons for each classifier, train them:-"""
+"""after deciding the number of neurons for each classifier, train:-"""
 
 # For classifier of class 'acq' :-
 def create_netnew1():
@@ -342,156 +342,7 @@ confusion_matrix(y_tst[:,1], yhat1)
 
 # calculation of precision, recall and f measure from this confusion matrix:-
 tn1, fp1, fn1, tp1 = confusion_matrix(y_tst[:,1], yhat1).ravel()
-precision1 = tp1/(tp1+fp1)#0.7272727272727273
-recall1 = tp1/(tp1+fn1)#0.7142857142857143
+precision1 = tp1/(tp1+fp1)#
+recall1 = tp1/(tp1+fn1)
 
 """cv error to decide the number of hidden neurons for 'earn':-"""
-
-cvs0 = []
-nntmp = [20, 30, 50, 70, 90]
-for tmp0 in nntmp:
-  def create_netnew():
-    netnew = Sequential()
-    netnew.add(Dense(tmp0, input_shape=(train_features1k.shape[1],), activation='sigmoid'))
-    netnew.add(Dense(2, activation='softmax'))
-    netnew.compile(loss = 'binary_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
-    return netnew
-  neural_net = KerasClassifier(build_fn = create_netnew, epochs = 20, batch_size = 1, verbose =0)
-  cv00 = cross_val_score(neural_net,train_features1k,y0tr_tgt, cv = 3)
-  cvs0.append(cv00.mean())
-  cvs0
-  #obtained cv scores: [0.9761134227153644, 0.9765757435660348, 0.9739559254122362, 0.9736477115117892, 0.9738018184620126]
-  # fixing number of neurons as 30 which gives cv score as 0.9765757435660348
-
-cvs2 = []
-nntmp = [20, 30, 50, 70, 90]
-for tmp2 in nntmp:
-  def create_netnew():
-    netnew = Sequential()
-    netnew.add(Dense(tmp2, input_shape=(train_features1k.shape[1],), activation='sigmoid'))
-    netnew.add(Dense(2, activation='softmax'))
-    netnew.compile(loss = 'binary_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
-    return netnew
-  neural_net = KerasClassifier(build_fn = create_netnew, epochs = 20, batch_size = 1, verbose =0)
-  cv22 = cross_val_score(neural_net,train_features1k,y2tr_tgt, cv = 3)
-  cvs2.append(cv22.mean())
-  cvs2
-  #obtained cv scores: [0.9761134227153644, 0.9765757435660348, 0.9739559254122362, 0.9736477115117892, 0.9738018184620126]
-  # fixing number of neurons as 30 which gives cv score as 0.9765757435660348
-
-cvs2
-
-cvs4 = []
-nntmp = [20, 30, 50, 70, 90]
-for tmp4 in nntmp:
-  def create_netnew():
-    netnew = Sequential()
-    netnew.add(Dense(tmp4, input_shape=(train_features1k.shape[1],), activation='sigmoid'))
-    netnew.add(Dense(2, activation='softmax'))
-    netnew.compile(loss = 'binary_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
-    return netnew
-  neural_net = KerasClassifier(build_fn = create_netnew, epochs = 20, batch_size = 1, verbose =0)
-  cv44 = cross_val_score(neural_net,train_features1k,y4tr_tgt, cv = 3)
-  cvs4.append(cv44.mean())
-  cvs4
-  #obtained cv scores: [0.9761134227153644, 0.9765757435660348, 0.9739559254122362, 0.9736477115117892, 0.9738018184620126]
-  # fixing number of neurons as 30 which gives cv score as 0.9765757435660348
-
-cvs4
-
-
-
-# For classifier of class 'earn' :-
-def create_netnew0():
-    netnew = Sequential()
-    netnew.add(Dense(30, input_shape=(train_features1k.shape[1],), activation='sigmoid'))
-    netnew.add(Dense(2, activation='softmax'))
-    netnew.compile(loss = 'binary_crossentropy', optimizer = 'adam', metrics = ['accuracy'])#,keras.metrics.Precision(), keras.metrics.Recall()
-    return netnew
-
-modelnew0 = create_netnew0()
-history = modelnew0.fit(train_features1k, y0tr_tgt, validation_split=0.33, epochs=50, batch_size=1,shuffle = True, verbose=0)
-
-import matplotlib
-import matplotlib.pyplot as plt
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.legend(['train', 'test'], loc='upper right')
-plt.title('model earn loss')
-plt.ylabel('Loss')
-plt.xlabel('Epoch')
-plt.show()
-
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.legend(['train', 'test'], loc='upper right')
-plt.yticks(np.arange(0.95, 1.05, step=0.025))
-plt.title('model accuracy')
-plt.ylabel('accuracy')
-plt.xlabel('epoch')
-plt.show()
-
-cvs0
-
-# For classifier of class 'earn' :-
-def create_netnew0():
-    netnew = Sequential()
-    netnew.add(Dense(30, input_shape=(train_features1k.shape[1],), activation='sigmoid'))
-    netnew.add(Dense(2, activation='softmax'))
-    netnew.compile(loss = 'binary_crossentropy', optimizer = 'adam', metrics = ['accuracy'])#,keras.metrics.Precision(), keras.metrics.Recall()
-    return netnew
-
-modelnew0 = create_netnew0()
-history = modelnew0.fit(train_features1k, y0tr_tgt, validation_split=0.33, epochs=50, batch_size=1,shuffle = True, verbose=0)
-import numpy as np
-import matplotlib.pyplot as plt
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.legend(['train', 'test'], loc='upper right')
-plt.yticks(np.arange(0.95, 1.05, step=0.025))
-plt.title('model accuracy')
-plt.ylabel('accuracy')
-plt.xlabel('Number of Epochs')
-plt.show()
-# number of epochs come out as >12 ~ 15
-modelnew0.fit(train_features1k, y0tr_tgt,
-              batch_size=1,
-              epochs=12,
-              validation_data=(test_features1k, y0tst_tgt),
-              shuffle=True,
-              )
-lr_probs = modelnew0.predict_proba(test_features1k)
-lr_probs = lr_probs[:,0]
-
-from sklearn.metrics import precision_recall_curve
-
-lr_precision, lr_recall, thresholds = precision_recall_curve(y_tst[:,0],lr_probs)
-plt.plot(lr_recall, lr_precision, label='Clf1 p-rr curve', linewidth = 0.5)
-plt.xlabel('Recall', fontsize = 10)
-plt.title('Precision vs Recall for class earn', fontsize = 10)
-plt.ylabel('Precision', fontsize = 10)
-
-# table of p,r,thresholds:-
-dfclf0 = pd.DataFrame(lr_precision)
-dfclf0.columns = ['Precision Clf0']
-dfclf0 = dfclf0.assign(Recall = lr_recall)
-thresholds = np.append(thresholds, 1.0)
-dfclf0 = dfclf0.assign(Threshold = thresholds)
-
-# breakeven point = index = 555. threshold value = 0.551425039768219
-yhat0 = [0]*len(test)
-for inn in range(len(test)):
-    if lr_probs[inn]>0.551425039768219:
-        yhat0[inn] = 1
-
-# yhat1 has "predictions of classifier 1" according to brekeven point.
-from sklearn.metrics import confusion_matrix
-confusion_matrix(y_tst[:,0], yhat0)
-
-# calculation of precision, recall and f measure from this confusion matrix:-
-tn0, fp0, fn0, tp0 = confusion_matrix(y_tst[:,0], yhat0).ravel()
-precision0 = tp0/(tp0+fp0)#0.7272727272727273
-recall0 = tp0/(tp0+fn0)#0.7142857142857143
-
-"""One Multilabel classifier :-"""
-
