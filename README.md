@@ -7,6 +7,11 @@ Keywords: Bag-of-words, TF-IDF,
 Sources of theory: [Book by Christopher Manning](https://nlp.stanford.edu/IR-book/html/htmledition/irbook.html)
 
 <!--
+Vector space models
+cranfield dataset
+okapi-BM25
+
 Preprocessing: Lemmatization,
+https://www.cs.cornell.edu/people/tj/publications/joachims_98a.pdf
 -->
 
