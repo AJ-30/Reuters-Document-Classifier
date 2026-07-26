@@ -13,5 +13,7 @@ okapi-BM25
 
 Preprocessing: Lemmatization,
 https://www.cs.cornell.edu/people/tj/publications/joachims_98a.pdf
+https://www.pdfdrive.com/search?q=information+retrieval+gerard+salton&pagecount=&pubyear=&searchin=en&more=true
+
 -->
 
